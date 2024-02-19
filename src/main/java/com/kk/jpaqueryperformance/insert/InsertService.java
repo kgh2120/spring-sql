@@ -23,7 +23,7 @@ import java.util.List;
 public class InsertService {
 
     public static final String INSERT_MEMBER_QUERY = "insert into member (name, age, created_at, updated_at) values (?,?,?,?)";
-    public static final int NUMBER_OF_INSERT = 100000;
+    public static final int NUMBER_OF_INSERT = 500000;
     private final MemberRepository memberRepository;
     private final JdbcTemplate jdbcTemplate;
     private final EntityManager em;

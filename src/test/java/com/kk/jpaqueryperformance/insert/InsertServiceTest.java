@@ -1,5 +1,6 @@
 package com.kk.jpaqueryperformance.insert;
 
+import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -15,15 +16,24 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 @SpringBootTest
 class InsertServiceTest {
+    /*
+        기준  100000;
+        EntityManager Persist :  cost 2775ms
+        DataJpa Save :  cost 3448ms
+        DataJpa SaveAll :  cost 3177ms
+        Jdbc Insert :  cost 650ms
+        Jdbc Bulk Insert :  cost 503ms
+
+        기준  500000;
+        EntityManager Persist :  cost 9483ms
+        DataJpa Save :  cost 11682ms
+        DataJpa SaveAll :  cost 11191ms
+        Jdbc Insert :  cost 1855ms
+        Jdbc Bulk Insert :  cost 1434ms
+     */
 
     @Autowired
     InsertService insertService;
-
-    @BeforeAll
-    static void init(){
-
-    }
-
     @DisplayName("EntityManager Persist")
     @Test
     void entityManagerPersistTest() throws Exception{
@@ -31,6 +41,7 @@ class InsertServiceTest {
         insertService.insertEntityManagerPersist();
         long end = System.currentTimeMillis();
         log.info("EntityManager Persist :  cost {}ms ", end-start);
+        // EntityManager Persist :  cost 2775ms
     }
 
     @DisplayName("DataJpa Save")
@@ -40,6 +51,7 @@ class InsertServiceTest {
         insertService.insertDataJpaSave();
         long end = System.currentTimeMillis();
         log.info("DataJpa Save :  cost {}ms ", end-start);
+        //DataJpa Save :  cost 3448ms
     }
 
     @DisplayName("DataJpa SaveAll")
@@ -49,6 +61,7 @@ class InsertServiceTest {
         insertService.insertDataJpaSaveAll();
         long end = System.currentTimeMillis();
         log.info("DataJpa SaveAll :  cost {}ms ", end-start);
+        //DataJpa SaveAll :  cost 3177ms
     }
 
     @DisplayName("Jdbc Insert")
@@ -58,6 +71,7 @@ class InsertServiceTest {
         insertService.insertJdbcTemplate();
         long end = System.currentTimeMillis();
         log.info("Jdbc Insert :  cost {}ms ", end-start);
+        // Jdbc Insert :  cost 650ms
     }
 
     @DisplayName("Jdbc Bulk Insert")
@@ -67,6 +81,7 @@ class InsertServiceTest {
         insertService.insertBulk();
         long end = System.currentTimeMillis();
         log.info("Jdbc Bulk Insert :  cost {}ms ", end-start);
+        // Jdbc Bulk Insert :  cost 503ms
     }
 
 }

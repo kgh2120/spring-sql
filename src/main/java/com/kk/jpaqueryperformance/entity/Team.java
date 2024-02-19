@@ -1,9 +1,14 @@
 package com.kk.jpaqueryperformance.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+
+@NoArgsConstructor
+@Getter
 @Entity
 public class Team extends BaseEntity{
 
@@ -12,6 +17,10 @@ public class Team extends BaseEntity{
     private Integer id;
     private String name;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
     private List<Member> members;
+
+    public Team(String name) {
+        this.name = name;
+    }
 }
