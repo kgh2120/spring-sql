@@ -1,12 +1,9 @@
 package com.kk.jpaqueryperformance.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import java.time.LocalDateTime;
 
 @ToString
 @Getter
@@ -28,7 +25,7 @@ public class Member extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     private Team team;
 
-    public void associatedWith(Team team) {
+    public void associatedWithTeam(Team team) {
         this.team = team;
     }
 }

@@ -41,18 +41,15 @@ public class DeleteRelationTest {
 
     @BeforeEach
     void beforeEach() {
-
         for (int i = 0; i < 10; i++) {
             Team team = new Team("팀" + i);
             em.persist(team);
-
             for (int j = 0; j < 1000; j++) {
                 Member member = new Member("회원" + j, 25);
-                member.associatedWith(team);
+                member.associatedWithTeam(team);
                 em.persist(member);
             }
         }
-
         em.flush();
         em.clear();
     }
@@ -64,7 +61,7 @@ public class DeleteRelationTest {
         teamRepository.deleteAll();
         em.flush();
         long end = System.currentTimeMillis();
-        logPerf(log, "delete by cascade", start, end);
+        logPerf(log, "delete by cascade", start, end); // [delete by cascade] cost 548ms
         // TEAM N, 각 팀에 멤버가 M개 있다고 할 경우
         /*
          * Team을 Select   1
@@ -98,7 +95,7 @@ public class DeleteRelationTest {
         teamRepository.deleteByIdIn(teamids);
         em.flush();
         long end = System.currentTimeMillis();
-        logPerf(log, "deleteQueryImprove", start, end);
+        logPerf(log, "deleteQueryImprove", start, end); // [deleteQueryImprove] cost 130ms
         /*
             Hibernate: select t1_0.id from team t1_0
             Hibernate: delete from member where team_id in (?,?,?,?,?,?,?,?,?,?)
