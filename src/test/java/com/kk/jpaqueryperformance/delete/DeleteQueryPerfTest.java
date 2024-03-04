@@ -2,6 +2,7 @@ package com.kk.jpaqueryperformance.delete;
 
 import com.kk.jpaqueryperformance.entity.Team;
 import com.kk.jpaqueryperformance.repository.MemberRepository;
+import com.kk.jpaqueryperformance.repository.TeamMapper;
 import com.kk.jpaqueryperformance.repository.TeamRepository;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,9 @@ public class DeleteQueryPerfTest {
     TeamRepository teamRepository;
     @Autowired
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Autowired
+    TeamMapper teamMapper;
 
     @BeforeEach
     void beforeEach(){
@@ -102,5 +106,14 @@ public class DeleteQueryPerfTest {
 
         long end = System.currentTimeMillis();
         logPerf(log, "jdbcBulkDeleteTest", start, end); // [jdbcBulkDeleteTest] cost 428ms
+    }
+
+    @Test
+    void mapperDeleteTest() throws Exception{
+        long start = System.currentTimeMillis();
+        List<Integer> ids = teamMapper.selectAllTeamId();
+        teamMapper.deleteTeamByTeamIds(ids);
+        long end = System.currentTimeMillis();
+        logPerf(log, "mapperDeleteTest", start, end); // [deleteInTest] cost 21112ms
     }
 }

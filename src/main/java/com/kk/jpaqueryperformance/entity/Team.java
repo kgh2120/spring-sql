@@ -17,7 +17,8 @@ public class Team extends BaseEntity{
     private Integer id;
     private String name;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
+//    @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "team")
     private List<Member> members;
 
     public Team(String name) {

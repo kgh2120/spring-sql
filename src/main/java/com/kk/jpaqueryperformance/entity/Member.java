@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @ToString
 @Getter
@@ -23,6 +25,7 @@ public class Member extends BaseEntity{
 
     @JoinColumn(name = "team_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Team team;
 
     public void associatedWithTeam(Team team) {
