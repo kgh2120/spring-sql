@@ -18,4 +18,7 @@ public interface MemberRepository extends JpaRepository<Member
 	@Query("delete from Member m where m.team.id in :teamIds")
 	@Modifying
 	void deleteAllByTeam_IdIn(List<Integer> teamIds);
+
+	@Query("select m.id from Member m where m.team.id in :teamids")
+	List<Integer> findAllIdsByTeamIds(List<Integer> teamids);
 }

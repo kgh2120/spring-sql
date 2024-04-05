@@ -1,15 +1,12 @@
 package com.kk.jpaqueryperformance.delete;
 
 import com.kk.jpaqueryperformance.entity.Team;
-import com.kk.jpaqueryperformance.repository.MemberRepository;
-import com.kk.jpaqueryperformance.repository.TeamMapper;
 import com.kk.jpaqueryperformance.repository.TeamRepository;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,9 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import static com.kk.jpaqueryperformance.PerformanceLogger.logPerf;
 
@@ -38,9 +33,6 @@ public class DeleteQueryPerfTest {
     TeamRepository teamRepository;
     @Autowired
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-    @Autowired
-    TeamMapper teamMapper;
 
     @BeforeEach
     void beforeEach(){
@@ -92,6 +84,7 @@ public class DeleteQueryPerfTest {
     void jdbcTemplateDeleteTest() throws Exception{
         long start = System.currentTimeMillis();
         List<Integer> ids = jdbcTemplate.queryForList("select t.id from Team t", Integer.class);
+        System.out.println(ids);
         jdbcTemplate.batchUpdate("delete from Team t where t.id = ?", new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
@@ -107,13 +100,6 @@ public class DeleteQueryPerfTest {
         long end = System.currentTimeMillis();
         logPerf(log, "jdbcBulkDeleteTest", start, end); // [jdbcBulkDeleteTest] cost 428ms
     }
+    
 
-    @Test
-    void mapperDeleteTest() throws Exception{
-        long start = System.currentTimeMillis();
-        List<Integer> ids = teamMapper.selectAllTeamId();
-        teamMapper.deleteTeamByTeamIds(ids);
-        long end = System.currentTimeMillis();
-        logPerf(log, "mapperDeleteTest", start, end); // [deleteInTest] cost 21112ms
-    }
 }
