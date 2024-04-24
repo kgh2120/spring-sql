@@ -24,9 +24,9 @@ public class MemberEntity {
     @JoinColumn(name = "team_id")
     @ManyToOne(fetch = FetchType.LAZY)
     // @OnDelete(action = OnDeleteAction.CASCADE)
-    private TeamEntity teamEntity;
+    private TeamEntity team;
 
     public void associatedWithTeam(TeamEntity teamEntity) {
-        this.teamEntity = teamEntity;
+        this.team = teamEntity;
     }
 }
