@@ -1,6 +1,7 @@
 package com.kk.springsql.mapper;
 
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.kk.springsql.entity.Team;
@@ -12,5 +13,8 @@ public interface TeamMapper {
 	void insertTeamDirect(Team team);
 
 	void insertTeamXML(Team team);
+
+	@InsertProvider(type = TeamProvider.class, method = "insertQuery")
+	void insertTeamProvider(Team team);
 
 }
