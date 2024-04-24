@@ -1,11 +1,13 @@
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
+  mapper-locations: classpath:/mappers/*.xml
 spring:
   jpa:
     hibernate:
       ddl-auto: none
     defer-datasource-initialization: true
+
   sql:
     init:
       mode: always
