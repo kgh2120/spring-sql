@@ -2,12 +2,12 @@ package com.kk.jpaqueryperformance.repository;
 
 import java.util.List;
 
-import com.kk.jpaqueryperformance.entity.Member;
+import com.kk.jpaqueryperformance.entity.MemberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-public interface MemberRepository extends JpaRepository<Member
+public interface MemberRepository extends JpaRepository<MemberEntity
         , Integer> {
 
 
@@ -15,10 +15,10 @@ public interface MemberRepository extends JpaRepository<Member
 	int deleteByIdIn(List<Integer> ids);
 
 
-	@Query("delete from Member m where m.team.id in :teamIds")
+	@Query("delete from MemberEntity m where m.team.id in :teamIds")
 	@Modifying
 	void deleteAllByTeam_IdIn(List<Integer> teamIds);
 
-	@Query("select m.id from Member m where m.team.id in :teamids")
+	@Query("select m.id from MemberEntity m where m.team.id in :teamids")
 	List<Integer> findAllIdsByTeamIds(List<Integer> teamids);
 }

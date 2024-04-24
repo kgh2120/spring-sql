@@ -1,8 +1,7 @@
 package com.kk.jpaqueryperformance.delete;
 
 
-import com.kk.jpaqueryperformance.entity.Member;
-import com.kk.jpaqueryperformance.entity.Team;
+import com.kk.jpaqueryperformance.entity.MemberEntity;
 import com.kk.jpaqueryperformance.repository.MemberRepository;
 import com.kk.jpaqueryperformance.repository.TeamRepository;
 import jakarta.persistence.EntityManager;
@@ -52,8 +51,8 @@ public class DeleteQueryTest {
     void beforeEach() {
 
         for (int j = 0; j < 1000; j++) {
-            Member member = new Member("회원" + j, 25);
-            em.persist(member);
+            MemberEntity memberEntity = new MemberEntity("회원" + j, 25);
+            em.persist(memberEntity);
         }
 
         em.flush();
@@ -62,9 +61,9 @@ public class DeleteQueryTest {
 
     @Test
     void deleteQueryCheckTest() throws Exception {
-        Member member = memberRepository.findById(1).orElseThrow();
+        MemberEntity memberEntity = memberRepository.findById(1).orElseThrow();
         long start = System.currentTimeMillis();
-        memberRepository.delete(member);
+        memberRepository.delete(memberEntity);
         em.flush();
         long end = System.currentTimeMillis();
         logPerf(log, "delete", start, end);
@@ -73,9 +72,9 @@ public class DeleteQueryTest {
 
     @Test
     void deleteByIdQueryCheckTest() throws Exception {
-        Member member = memberRepository.findById(1).orElseThrow();
+        MemberEntity memberEntity = memberRepository.findById(1).orElseThrow();
         long start = System.currentTimeMillis();
-        memberRepository.deleteById(member.getId());
+        memberRepository.deleteById(memberEntity.getId());
         em.flush();
         long end = System.currentTimeMillis();
         logPerf(log, "deleteById", start, end);
@@ -85,7 +84,7 @@ public class DeleteQueryTest {
     @Test
     void entityManagerDeleteQueryTest() throws Exception{
         long start = System.currentTimeMillis();
-        em.createQuery("delete from Member m where m.id =:id")
+        em.createQuery("delete from MemberEntity m where m.id =:id")
                 .setParameter("id", 1)
                 .executeUpdate();
         long end = System.currentTimeMillis();
@@ -136,7 +135,7 @@ public class DeleteQueryTest {
     void deleteAllByIdQueryCheckTest() throws Exception {
         long start = System.currentTimeMillis();
         List<Integer> ids = memberRepository.findAll()
-            .stream().map(Member::getId).toList();
+            .stream().map(MemberEntity::getId).toList();
         em.clear();
         memberRepository.deleteAllById(ids);
 
@@ -162,7 +161,7 @@ public class DeleteQueryTest {
 
     @Test
     void deleteAllInBatchQueryWithListCheckTest() throws Exception {
-        List<Member> all = memberRepository.findAll();
+        List<MemberEntity> all = memberRepository.findAll();
         long start = System.currentTimeMillis();
         memberRepository.deleteAllInBatch(all);
         long end = System.currentTimeMillis();
@@ -172,8 +171,8 @@ public class DeleteQueryTest {
 
     @Test
     void deleteAllInBatchQueryWithIdsCheckTest() throws Exception {
-        List<Member> all = memberRepository.findAll();
-        List<Integer> ids = all.stream().map(Member::getId)
+        List<MemberEntity> all = memberRepository.findAll();
+        List<Integer> ids = all.stream().map(MemberEntity::getId)
                 .toList();
         em.clear();
         long start = System.currentTimeMillis();
@@ -185,8 +184,8 @@ public class DeleteQueryTest {
 
     @Test
     void deleteAlLByIdInQueryCheckTest() throws Exception {
-        List<Member> all = memberRepository.findAll();
-        List<Integer> ids = all.stream().map(Member::getId)
+        List<MemberEntity> all = memberRepository.findAll();
+        List<Integer> ids = all.stream().map(MemberEntity::getId)
             .toList();
         em.clear();
         long start = System.currentTimeMillis();

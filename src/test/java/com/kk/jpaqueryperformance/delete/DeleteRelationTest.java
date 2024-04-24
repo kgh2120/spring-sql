@@ -1,7 +1,7 @@
 package com.kk.jpaqueryperformance.delete;
 
-import com.kk.jpaqueryperformance.entity.Member;
-import com.kk.jpaqueryperformance.entity.Team;
+import com.kk.jpaqueryperformance.entity.MemberEntity;
+import com.kk.jpaqueryperformance.entity.TeamEntity;
 import com.kk.jpaqueryperformance.repository.MemberRepository;
 import com.kk.jpaqueryperformance.repository.TeamRepository;
 import jakarta.persistence.EntityManager;
@@ -11,18 +11,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.CallableStatementCreator;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementSetter;
-import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.kk.jpaqueryperformance.PerformanceLogger.logPerf;
 
 import java.sql.*;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * [delete by cascade] cost 1255ms
@@ -48,12 +43,12 @@ public class DeleteRelationTest {
     @BeforeEach
     void beforeEach() {
         for (int i = 0; i < 10_000; i++) {
-            Team team = new Team("팀" + i);
-            em.persist(team);
+            TeamEntity teamEntity = new TeamEntity("팀" + i);
+            em.persist(teamEntity);
             for (int j = 0; j < 10; j++) {
-                Member member = new Member("회원" + j, 25);
-                member.associatedWithTeam(team);
-                em.persist(member);
+                MemberEntity memberEntity = new MemberEntity("회원" + j, 25);
+                memberEntity.associatedWithTeam(teamEntity);
+                em.persist(memberEntity);
             }
         }
         em.flush();

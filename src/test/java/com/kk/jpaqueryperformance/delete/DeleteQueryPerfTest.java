@@ -1,6 +1,6 @@
 package com.kk.jpaqueryperformance.delete;
 
-import com.kk.jpaqueryperformance.entity.Team;
+import com.kk.jpaqueryperformance.entity.TeamEntity;
 import com.kk.jpaqueryperformance.repository.TeamRepository;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,7 @@ public class DeleteQueryPerfTest {
     void beforeEach(){
 
         for (int i = 0; i < 10_0000; i++) {
-            em.persist(new Team());
+            em.persist(new TeamEntity());
         }
         em.flush();
         em.clear();
@@ -70,9 +70,9 @@ public class DeleteQueryPerfTest {
     @Test
     void emDeleteBulkTest() throws Exception{
         long start = System.currentTimeMillis();
-        List<Integer> ids = em.createQuery("select t.id from Team t ", Integer.class)
+        List<Integer> ids = em.createQuery("select t.id from TeamEntity t ", Integer.class)
                 .getResultList();
-        em.createQuery("delete from Team t where t.id in :ids")
+        em.createQuery("delete from TeamEntity t where t.id in :ids")
                         .setParameter("ids", ids)
                                 .executeUpdate();
         em.flush();

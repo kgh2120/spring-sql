@@ -1,6 +1,6 @@
 package com.kk.jpaqueryperformance.insert;
 
-import com.kk.jpaqueryperformance.entity.Member;
+import com.kk.jpaqueryperformance.entity.MemberEntity;
 import com.kk.jpaqueryperformance.repository.MemberRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -30,22 +30,22 @@ public class InsertService {
 
     public void insertEntityManagerPersist() {
         for (int i = 0; i < NUMBER_OF_INSERT; i++) {
-            em.persist(new Member("회원", 20));
+            em.persist(new MemberEntity("회원", 20));
         }
     }
 
     public void insertDataJpaSave() {
         for (int i = 0; i < NUMBER_OF_INSERT; i++) {
-            memberRepository.save(new Member("회원", 20));
+            memberRepository.save(new MemberEntity("회원", 20));
         }
     }
 
     public void insertDataJpaSaveAll() {
-        List<Member> members = new ArrayList<>();
+        List<MemberEntity> memberEntities = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_INSERT; i++) {
-            members.add(new Member("회원", 20));
+            memberEntities.add(new MemberEntity("회원", 20));
         }
-        memberRepository.saveAll(members);
+        memberRepository.saveAll(memberEntities);
     }
 
     public void insertJdbcTemplate() {
@@ -57,25 +57,25 @@ public class InsertService {
     }
 
     public void insertBulk() {
-        List<Member> members = new ArrayList<>();
+        List<MemberEntity> memberEntities = new ArrayList<>();
         for (int i = 0; i < NUMBER_OF_INSERT; i++) {
-            members.add(new Member("회원", 20));
+            memberEntities.add(new MemberEntity("회원", 20));
         }
 
         jdbcTemplate.batchUpdate(INSERT_MEMBER_QUERY, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
                 Date date = new Date(Clock.systemDefaultZone().millis());
-                Member member = members.get(i);
-                ps.setString(1, member.getName());
-                ps.setInt(2, member.getAge());
+                MemberEntity memberEntity = memberEntities.get(i);
+                ps.setString(1, memberEntity.getName());
+                ps.setInt(2, memberEntity.getAge());
                 ps.setDate(3, date);
                 ps.setDate(4, date);
             }
 
             @Override
             public int getBatchSize() {
-                return members.size();
+                return memberEntities.size();
             }
         });
 
