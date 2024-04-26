@@ -11,4 +11,8 @@ public class Team {
 
 	private Integer id;
 	private String name;
+
+	public Team(String name) {
+		this.name = name;
+	}
 }
